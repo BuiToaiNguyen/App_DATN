@@ -13,6 +13,7 @@ import {MAIN_HomeScreen, MAIN_SettingScreen} from '../screen/home';
 import AccountStack from './AccountStack';
 
 import {TDButtonNavigation} from '../components';
+import { Main_Cam } from './../screen/camera/Main_Cam';
 
 const PlusScreen = () => {
   return null;
@@ -58,7 +59,7 @@ const AppBottomTab = () => {
 
       <Tab.Screen
         name="BaoCaoScreen"
-        component={MAIN_HomeScreen}
+        component={Main_Cam}
         options={{
           headerShown: false,
           tabBarLabel: 'Báo cáo',
