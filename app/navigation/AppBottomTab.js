@@ -43,11 +43,11 @@ const AppBottomTab = () => {
         component={AccountStack}
         options={{
           headerShown: false,
-          tabBarLabel: 'Lịch sử',
+          tabBarLabel: 'Home',
           tabBarIcon: ({focused, tintColor, size}) => (
             <View>
               <Icon
-                name="list"
+                name="home"
                 size={isTablet ? 24 : 22}
                 color={focused ? Colors.primary : '#757E83'}
                 solid={focused ? true : false}
@@ -62,12 +62,12 @@ const AppBottomTab = () => {
         component={Main_Cam}
         options={{
           headerShown: false,
-          tabBarLabel: 'Báo cáo',
+          tabBarLabel: 'Camera',
           tabBarBadge: null,
           tabBarIcon: ({focused, tintColor, size}) => (
             <View>
               <Icon
-                name="chart-line"
+                name="camera"
                 size={isTablet ? 24 : 22}
                 color={focused ? Colors.primary : '#757E83'}
                 solid={focused ? true : false}
