@@ -3,12 +3,11 @@ export default {
   white: '#FEFEFE',
   text: '#212529',
   line: '#E3E7EC',
-  primary: '#e98543',
+  primary: '#00C566',
   secondary: '#F6F8FE',
   success: '#00C566',
   error: '#E53935',
   warning: '#FACC15',
-
   grey: '#acacac',
   gray: '#5f5f5f',
   gray60: '#9CA4AB',

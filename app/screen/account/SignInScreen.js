@@ -52,18 +52,19 @@ const SignInScreen = () => {
   return (
     <View style={{flex: 1, backgroundColor: Colors.primary}}>
       <View style={{flex: 1 / 3, alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{color: Colors.white, fontWeight: 'bold', fontSize: 24, lineHeight: 32}}>Hi, Welcome Back!</Text>
-        <Text style={{color: Colors.white, fontSize: 14, lineHeight: 22, marginTop: 5}}>Lorem ipsum dolor sit amet</Text>
+        <Text style={{color: Colors.white, fontWeight: 'bold', fontSize: 24, lineHeight: 32}}>Hi, Xin Mời Đăng Nhập !</Text>
       </View>
 
       <ScrollView
         style={{backgroundColor: Colors.white, flex: 2 / 3, borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 16}}>
         <TDTextInputAccount title={'Email'} placeholder={'Enter your email address'} showEye={false} />
+        <TDTextInputAccount title={'Password'} placeholder={'Enter your password'} showEye={true} />
+
         <TDButtonPrimary
           title={'Continue with Email'}
           contentStyle={{marginTop: 32}}
           onPress={() => {
-            navigation.navigate('SignInEmailScreen');
+            navigation.navigate('HomeScreen');
           }}
         />
         <TDDividerWithTitle title={'Or continue with'} contentStyle={{marginTop: 32, paddingHorizontal: 20}} />

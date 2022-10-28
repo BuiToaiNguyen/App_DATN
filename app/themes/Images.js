@@ -1,5 +1,5 @@
 const Images = {
-  images: {},
+  images: { anhbaidoxe:require('@app/assets/images/anhbaidoxe.jpg')},
   logos: {},
   backgrounds: {},
   icons: {

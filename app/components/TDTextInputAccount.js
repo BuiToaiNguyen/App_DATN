@@ -18,6 +18,7 @@ const TDTextInputAccount = ({showEye, value, onChangeText, placeholder, title}) 
           placeholderTextColor={Colors.gray60}
           placeholder={placeholder}
           secureTextEntry={showEye && !hide}
+          
         />
         {showEye && (
           <FontAwesome

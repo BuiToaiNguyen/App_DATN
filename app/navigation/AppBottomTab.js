@@ -14,6 +14,7 @@ import AccountStack from './AccountStack';
 
 import {TDButtonNavigation} from '../components';
 import { Main_Cam } from './../screen/camera/Main_Cam';
+import Home from '@app/screen/home/Home';
 
 const PlusScreen = () => {
   return null;
@@ -39,8 +40,8 @@ const AppBottomTab = () => {
       backBehavior={'initialRoute'}>
       <Tab.Screen
         headerMode={'none'}
-        name="HomeScreen"
-        component={AccountStack}
+        name="Home"
+        component={Home}
         options={{
           headerShown: false,
           tabBarLabel: 'Home',
@@ -58,11 +59,11 @@ const AppBottomTab = () => {
       />
 
       <Tab.Screen
-        name="BaoCaoScreen"
+        name="CameraScreen"
         component={Main_Cam}
         options={{
           headerShown: false,
-          tabBarLabel: 'Camera',
+          tabBarLabel: 'Quét',
           tabBarBadge: null,
           tabBarIcon: ({focused, tintColor, size}) => (
             <View>
@@ -76,30 +77,8 @@ const AppBottomTab = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="AddScreen"
-        component={PlusScreen}
-        options={{
-          headerShown: false,
-          tabBarButton: () => <TDButtonNavigation />,
-        }}
-      />
-      <Tab.Screen
-        name="NhacNhoScreen"
-        component={MAIN_HomeScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Nhắc nhở',
-          tabBarIcon: ({focused, tintColor, size}) => (
-            <Icon
-              name="alarm-clock"
-              size={isTablet ? 24 : 22}
-              color={focused ? Colors.primary : '#757E83'}
-              solid={focused ? true : false}
-            />
-          ),
-        }}
-      />
+
+     
       <Tab.Screen
         name="SettingScreen"
         component={MAIN_SettingScreen}
@@ -109,6 +88,22 @@ const AppBottomTab = () => {
           tabBarIcon: ({focused, tintColor, size}) => (
             <Icon
               name="cogs"
+              size={isTablet ? 24 : 22}
+              color={focused ? Colors.primary : '#757E83'}
+              solid={focused ? true : false}
+            />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="NhacNhoScreen"
+        component={MAIN_HomeScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Tài Khoản',
+          tabBarIcon: ({focused, tintColor, size}) => (
+            <Icon
+              name="user"
               size={isTablet ? 24 : 22}
               color={focused ? Colors.primary : '#757E83'}
               solid={focused ? true : false}
