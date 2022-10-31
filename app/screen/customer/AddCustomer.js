@@ -43,6 +43,7 @@ const AddCustomer = () => {
             return;
         }
     }
+    setError("")
     var customer={
         nameCustomer,
         licensePlate,

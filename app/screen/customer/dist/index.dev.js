@@ -21,11 +21,19 @@ Object.defineProperty(exports, "DetailCustomer", {
     return _DetailCustomer["default"];
   }
 });
+Object.defineProperty(exports, "AdjournTicket", {
+  enumerable: true,
+  get: function get() {
+    return _AdjournTicket["default"];
+  }
+});
 
 var _AddCustomer = _interopRequireDefault(require("./AddCustomer"));
 
 var _ListCustomer = _interopRequireDefault(require("./ListCustomer"));
 
 var _DetailCustomer = _interopRequireDefault(require("./DetailCustomer"));
+
+var _AdjournTicket = _interopRequireDefault(require("./AdjournTicket"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

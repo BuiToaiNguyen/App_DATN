@@ -10,7 +10,8 @@ import AppBottomTab from './AppBottomTab';
 
 import {ListLoaiDichVuScreen} from '@app/screen/loaidichvu';
 import { SignInScreen } from '@app/screen/account';
-import { AddCustomer,DetailCustomer,ListCustomer } from '@app/screen/customer';
+import { AddCustomer,DetailCustomer,ListCustomer,AdjournTicket } from '@app/screen/customer';
+import {Main_Ticket} from '@app/screen/ticket';
 
 const AppStack = () => {
   const navigation = useNavigation();
@@ -23,6 +24,8 @@ const AppStack = () => {
       <Stack.Screen name = "ThemKhachHang" component={AddCustomer}  screenOptions={{headerShown: true}} />
       <Stack.Screen name = "DanhSachKhachHang" component={ListCustomer}  screenOptions={{headerShown: true}} />
       <Stack.Screen name = "ChiTietKhachHang" component={DetailCustomer}  screenOptions={{headerShown: true}} />
+      <Stack.Screen name = "GiaHanVe" component={AdjournTicket}  screenOptions={{headerShown: true}} />
+      <Stack.Screen name = "QuanLyGiaVe" component={Main_Ticket}  screenOptions={{headerShown: true}} />
     </Stack.Navigator>
   );
 };

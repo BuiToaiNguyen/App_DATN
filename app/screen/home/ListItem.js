@@ -53,6 +53,12 @@ const DATA = [
   //   icon: 'file-chart-pie',
   //   page: 'ThongKeDoanhThu',
   // },
+  {
+    id: '58694a0f-3da1-1f45571e29d',
+    title: 'Quán Lý Giá Vé',
+    icon: 'ticket',
+    page: 'QuanLyGiaVe',
+  },
 ];
 
 const Item = ({title, icon, page}) => {

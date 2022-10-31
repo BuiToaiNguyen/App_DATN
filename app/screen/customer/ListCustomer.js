@@ -57,6 +57,7 @@ const ListCustomer = () => {
 
         <View style={{width: '100%'}}>
           <SearchBar placeholder="Tìm Kiếm Khách Hàng ..." size={30} platform="android"
+          
             ref={search => this.search = search}
             onChangeText={updateSearch}
             value={search}
@@ -64,7 +65,7 @@ const ListCustomer = () => {
         </View>
       </View>
       <ScrollView style={{}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <Text style={{fontSize:25}}>Danh sách khách hàng</Text>
+        <Text style={{fontSize:25 ,marginLeft:10}}>Danh sách khách hàng</Text>
         <View style={{}}>
             <Item navigation={navigation}></Item>
         </View>
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'flex-start',
     marginTop:10,
-    marginHorizontal:5
+    marginHorizontal:5,
+    paddingLeft:10
   },
   imageItem:{
     width:100,
@@ -103,7 +105,8 @@ const styles = StyleSheet.create({
   containerText:{
     flex:1,
     height:100,
-    padding:5
+    padding:5,
+    marginLeft:10
   }
 
 });
