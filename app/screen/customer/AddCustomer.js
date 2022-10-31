@@ -6,6 +6,8 @@ import {Colors, Fonts, Images} from '@app/themes';
 import {TDButtonPrimary, TDButtonSecondary, TDDividerWithTitle, TDTextInputAccount} from '@app/components';
 import {Header} from '@app/components';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5Pro';
+import GLOBAL_API from './../services/apiServices';
+import { REACT_APP_URL } from '@app/config/Config';
 
 const AddCustomer = () => {
   const [nameCustomer, setNameCustomer] = useState(null);
@@ -17,7 +19,7 @@ const AddCustomer = () => {
   const [error,setError] = useState("")
   const [focus,setFocus] = useState("nameCustomer")
   strRegex = /(^[0-9]{2}-?[0-9A-Z]{1,3}$)|(^[A-Z0-9]{2,5}$)|(^[0-9]{2,3}-[0,9]{2}$)|(^[A-Z0-9]{2,3}-?[0-9]{4,5}$)|(^[A-Z]{2}-?[0-9]{0,4}$)|(^[0-9]{2}-?[A-Z0-9]{2,3}-?[A-Z0-9]{2,3}-?[0-9]{2}$)|(^[A-Z]{2}-?[0-9]{2}-?[0-9]{2}$)|(^[0-9]{3}-?[A-Z0-9]{2}$)$/
-  const btnAdd =()=>{
+  const btnAdd = async ()=>{
     if(nameCustomer==null || nameCustomer==""){
         setError("vui lòng nhập tên khách hàng")
         setFocus("nameCustomer")
@@ -50,6 +52,17 @@ const AddCustomer = () => {
         address:addressCustomer,
         age:ageCustomer,
     }
+    console.log("bd gọi api")
+
+    // const {data} =await GLOBAL_API.requestPOST(REACT_APP_URL+"api/Customers",customer)
+    console.log(REACT_APP_URL+"api/Customers")
+    const {data} =await GLOBAL_API.requestGET(REACT_APP_URL+"api/Customers")
+     if(data!=null){
+        alert("Thêm khách hàng thành công !")
+     }
+     else{
+        alert("thêm thất bại")
+     }
     
 
 }

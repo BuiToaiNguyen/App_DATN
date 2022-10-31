@@ -16,7 +16,12 @@ const GLOBAL_API = {
 
   requestPOST: async (urlService, data) => {
     return await axios
-      .post(urlService, data)
+      .post(urlService, data,  
+        
+        {headers: { 
+        'Content-Type': 'multipart/form-data'
+      }}
+      )
       .then(function (response) {
         return response.data;
       })
@@ -45,7 +50,9 @@ const GLOBAL_API = {
 
   requestGET: async urlService => {
     return await axios
-      .get(urlService)
+      .get(urlService
+      
+      )
       .then(function (response) {
         return response.data;
       })

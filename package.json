@@ -9,7 +9,8 @@
     "test": "jest",
     "lint": "eslint .",
     "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
-    "getSHAkey": "cd android && ./gradlew signingReport"
+    "getSHAkey": "cd android && ./gradlew signingReport",
+    "clean-android": "cd android && rm -R .gradle && cd app && rm -R build"
   },
   "dependencies": {
     "@manaflair/redux-batch": "^1.0.0",
@@ -22,7 +23,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "@rneui/base": "^4.0.0-rc.6",
     "@rneui/themed": "^4.0.0-rc.6",
-    "axios": "^1.1.0",
+    "axios": "0.27.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "pod-install": "^0.1.38",

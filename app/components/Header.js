@@ -44,7 +44,7 @@ const Item = ({leftComponent, isStack, title, showRight, RightComponent, backgro
       }
       centerComponent={{
         text: title,
-        style: {color: textColor ? textColor : Colors.white, ...Fonts.style.extralarge_bold},
+        style: {color: textColor ? textColor : Colors.white, ...Fonts.style.extralarge_bold,alignItems:"center"},
         onPress:
           leftComponent || isStack
             ? () => {

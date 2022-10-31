@@ -11,42 +11,48 @@ const DATA = [
     icon: 'user-plus',
     page: 'ThemKhachHang',
   },
+  // {
+  //   id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+  //   title: 'Gia Hạn Vé ',
+  //   icon: 'ticket',
+  //   page: 'GiaHanVe',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Xem Xe Đăng Ký',
+  //   icon: 'car',
+  //   page: 'XemXeDangKy',
+  // },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Gia Hạn Vé ',
-    icon: 'ticket',
-    page: 'GiaHanVe',
+    id: '58694a0f-3da1-471f-bd96-14e29d72',
+    title: 'Xem Khách Hàng',
+    icon: 'list',
+    page: 'DanhSachKhachHang',
   },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Xem Xe Đăng Ký',
-    icon: 'car',
-    page: 'XemXeDangKy',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d73',
-    title: 'Xem Tài Khoản',
-    icon: 'user',
-    page: 'XemTaiKhoan',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d75',
-    title: 'Chụp Biển Sô',
-    icon: 'camera',
-    page: 'ChupBienSo',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d',
-    title: 'Chính Sách Bảo Mật',
-    icon: 'shield',
-    page: 'ChinhSacBaoMat',
-  },
-  {
-    id: '58694a0f-3da1-1f-bd96-145571e29d',
-    title: 'Thống Kê Doanh Thu ',
-    icon: 'file-chart-pie',
-    page: 'ThongKeDoanhThu',
-  },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d73',
+  //   title: 'Xem Tài Khoản',
+  //   icon: 'user',
+  //   page: 'XemTaiKhoan',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d75',
+  //   title: 'Chụp Biển Sô',
+  //   icon: 'camera',
+  //   page: 'ChupBienSo',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d',
+  //   title: 'Chính Sách Bảo Mật',
+  //   icon: 'shield',
+  //   page: 'ChinhSacBaoMat',
+  // },
+  // {
+  //   id: '58694a0f-3da1-1f-bd96-145571e29d',
+  //   title: 'Thống Kê Doanh Thu ',
+  //   icon: 'file-chart-pie',
+  //   page: 'ThongKeDoanhThu',
+  // },
 ];
 
 const Item = ({title, icon, page}) => {

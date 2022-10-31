@@ -45,7 +45,11 @@ var GLOBAL_API = {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return regeneratorRuntime.awrap(_axios["default"].post(urlService, data).then(function (response) {
+            return regeneratorRuntime.awrap(_axios["default"].post(urlService, data, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }).then(function (response) {
               return response.data;
             })["catch"](function (error) {
               console.log(error);

@@ -9,7 +9,23 @@ Object.defineProperty(exports, "AddCustomer", {
     return _AddCustomer["default"];
   }
 });
+Object.defineProperty(exports, "ListCustomer", {
+  enumerable: true,
+  get: function get() {
+    return _ListCustomer["default"];
+  }
+});
+Object.defineProperty(exports, "DetailCustomer", {
+  enumerable: true,
+  get: function get() {
+    return _DetailCustomer["default"];
+  }
+});
 
 var _AddCustomer = _interopRequireDefault(require("./AddCustomer"));
+
+var _ListCustomer = _interopRequireDefault(require("./ListCustomer"));
+
+var _DetailCustomer = _interopRequireDefault(require("./DetailCustomer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
