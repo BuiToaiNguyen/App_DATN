@@ -4,9 +4,9 @@ import React from 'react';
 
 import {Colors, Fonts} from '@app/themes';
 
-const TDButtonPrimary = ({contentStyle, titleStyle, imageStyle, title, image, onPress, ...props}) => {
+const TDButtonPrimary = ({loading,contentStyle, titleStyle, imageStyle, title, image, onPress , ...props}) => {
   return (
-    <TouchableOpacity style={[styles.content, contentStyle]} onPress={onPress}>
+    <TouchableOpacity style={[styles.content, contentStyle]} onPress={onPress} disabled={loading}>
       {image && <Image source={image} style={[styles.image, imageStyle]} />}
       <Text style={[styles.text, {marginStart: image ? 10 : 0}, titleStyle]}>{title ?? ''}</Text>
     </TouchableOpacity>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
+    backgroundColor:  Colors.primary,
     borderRadius: 100,
     padding: 16,
   },

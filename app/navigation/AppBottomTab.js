@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import {Colors} from '@app/themes';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -15,6 +15,7 @@ import AccountStack from './AccountStack';
 import {TDButtonNavigation} from '../components';
 import { Main_Cam } from './../screen/camera/Main_Cam';
 import Home from '@app/screen/home/Home';
+import { Profile } from '@app/screen/account';
 
 const PlusScreen = () => {
   return null;
@@ -97,7 +98,7 @@ const AppBottomTab = () => {
       />
        <Tab.Screen
         name="NhacNhoScreen"
-        component={MAIN_HomeScreen}
+        component={Profile}
         options={{
           headerShown: false,
           tabBarLabel: 'Tài Khoản',

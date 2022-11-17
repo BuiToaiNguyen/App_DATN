@@ -25,7 +25,7 @@ return (
 const styles = StyleSheet.create({
 view: {
   marginTop: 0
-  ,
+  
 },
 });
 

@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   accessToken: '',
   userInfo: null,
-
   listLoading: false,
   actionsLoading: false,
   error: null,
@@ -34,5 +33,9 @@ export const globalSlice = createSlice({
         state.actionsLoading = true;
       }
     },
+
+    setUser:(state,action)=>{
+      state.userInfo = action.payload
+    }
   },
 });

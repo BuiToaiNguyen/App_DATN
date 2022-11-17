@@ -16,14 +16,15 @@ const GLOBAL_API = {
 
   requestPOST: async (urlService, data) => {
     return await axios
-      .post(urlService, data,  
-        
-        {headers: { 
-        'Content-Type': 'multipart/form-data'
-      }}
+      .post(
+        urlService,
+        data,
+        {
+          headers: {'Content-Type': 'application/json; charset=utf-8'},
+        },
       )
       .then(function (response) {
-        return response.data;
+        return response;
       })
       .catch(function (error) {
         console.log(error);
@@ -40,7 +41,7 @@ const GLOBAL_API = {
         },
       })
       .then(function (response) {
-        return response.data;
+        return response;
       })
       .catch(function (error) {
         console.log(error);
@@ -50,9 +51,22 @@ const GLOBAL_API = {
 
   requestGET: async urlService => {
     return await axios
-      .get(urlService
-      
-      )
+      .get(urlService)
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return {data: null};
+      });
+  },
+  requestPUT: async (URL, data) => {
+    return await axios({
+      method: 'PUT',
+      url: URL,
+      data: data,
+      headers: {'Content-Type': 'application/json; charset=utf-8'},
+    })
       .then(function (response) {
         return response.data;
       })

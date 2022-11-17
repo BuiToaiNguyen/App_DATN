@@ -28,7 +28,8 @@ const DATA = [
     title: 'Xem Khách Hàng',
     icon: 'list',
     page: 'DanhSachKhachHang',
-  },
+  },  
+
   // {
   //   id: '58694a0f-3da1-471f-bd96-145571e29d73',
   //   title: 'Xem Tài Khoản',
@@ -58,7 +59,20 @@ const DATA = [
     title: 'Quán Lý Giá Vé',
     icon: 'ticket',
     page: 'QuanLyGiaVe',
+  }, 
+  {
+    id: '5860f-3da1-1f45571e29d',
+    title: 'Chụp Biển Số',
+    icon: 'camera',
+    page: 'ChupBienSo',
   },
+  {
+    id: '58694a0f-3da1-471f-bd29d72',
+    title: 'Lịch Sử Quét',
+    icon: 'history',
+    page: 'LichSuQuet',
+  },
+
 ];
 
 const Item = ({title, icon, page}) => {
@@ -70,9 +84,9 @@ const Item = ({title, icon, page}) => {
         navigation.navigate(page);
       }}>
       <View style={styles.itemContainer}>
-        <Icon name={icon} size={32} color={Colors.yellow} solid={false} style={styles.icon} />
+        <Icon name={icon} size={32} color={'white'} solid={false} style={styles.icon} />
 
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={styles.title} numberOfLines={1} >
           {title}
         </Text>
       </View>
@@ -84,7 +98,7 @@ const List = () => {
   const renderItem = ({item}) => <Item title={item.title} />;
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{fontSize: 25, marginTop: 20}}>Danh mục</Text>
+      <Text style={{fontSize: 25, marginVertical: 10,color:'white',marginLeft:10}}>Danh mục</Text>
       <View
         style={{
           borderBottomColor: 'black',
@@ -121,6 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5,
     textAlign: 'center',
+    color:'white'
   },
   buttonTouch: {
     marginTop: StatusBar.currentHeight || 0,

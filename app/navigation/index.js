@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Platform} from 'react-native';
+import {StyleSheet, Platform,SafeAreaView } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -14,6 +14,7 @@ const RootContainerScreen = () => {
   return (
     <NavigationContainer>
       <Host>
+        <SafeAreaView style={{flex:1}}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen
             name="AppStack"
@@ -23,6 +24,7 @@ const RootContainerScreen = () => {
             }}
           />
         </Stack.Navigator>
+        </SafeAreaView>
       </Host>
     </NavigationContainer>
   );
