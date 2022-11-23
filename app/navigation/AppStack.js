@@ -13,6 +13,8 @@ import { AddCustomer,DetailCustomer,ListCustomer,AdjournTicket } from '@app/scre
 import {Main_Ticket} from '@app/screen/ticket';
 import ChupBienSo from '@app/screen/camera/ChupBienSo';
 import {SignInScreen, SignInEmailScreen, SignUpScreen, ForgotScreen, ChangePasswordScreen, Account} from '@app/screen/account';
+import AddUser from '@app/screen/admin/AddUser';
+import ManageAccount from '@app/screen/admin/ManageAccount';
 
 const AppStack = () => {
   const navigation = useNavigation();
@@ -34,6 +36,7 @@ const AppStack = () => {
       <Stack.Screen name="ForgotScreen" component={ForgotScreen} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
       <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="ManageAccount" component={ManageAccount} />
     </Stack.Navigator>
   );
 };

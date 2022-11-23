@@ -41,7 +41,7 @@ export default Account = () => {
   
     const onCameraPress = useCallback(() => {
       const options = {
-        saveToPhotos: true,
+        saveToPhotos: false,
         mediaType: 'photo',
         includeBase64: true,
       };
@@ -51,13 +51,11 @@ export default Account = () => {
 
     useEffect(()=>{
       pickerResponse?.assets  && RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
-        console.log(res)
         setDataUser(pre => ({...pre,code : res}))
       });
     },[pickerResponse])
 
-    const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
-    console.log(uri)
+    //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
     useEffect(()=>{
       setDataUser(user)
     },[])
@@ -81,13 +79,11 @@ export default Account = () => {
       if(rs){
         dispatch(actions.setUser(rs));
         navigation.goBack()
-
       }
     }
-console.log(user);
   return (
 
-    <SafeAreaView style={{paddingVertical:28,flex:1}} >
+    <View style={{paddingVertical:0,flex:1}} >
       <Header
         title="Xem sửa thông tin cá nhân"
         isStack={true}
@@ -105,7 +101,7 @@ console.log(user);
     <View syle={styles.container}>
       <ScrollView style={{ paddingVertical: 16 , paddingHorizontal:10}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <View style={styles.containerProfile}>
-          <Image source={{uri: (dataUser?.code !="string" ? dataUser?.code  : "https://cdn.chanhtuoi.com/uploads/2022/01/hinh-avatar-nam-deo-kinh.jpg")}} style={styles.imageProfile}></Image>
+          <Image source={{uri: (dataUser?.code !="string" ? `data:image/jpg;base64,${dataUser?.code}`  : "https://cdn.chanhtuoi.com/uploads/2022/01/hinh-avatar-nam-deo-kinh.jpg")}} style={styles.imageProfile}></Image>
           <Icon name="camera" style={styles.iconCam} size={30} onPress={()=>{setVisible(true)}}></Icon>
           <Text style={{fontSize: 25, color: Colors.text, paddingTop: 10}}>{dataUser?.fullName}</Text>
         </View>
@@ -182,7 +178,7 @@ console.log(user);
         onCameraPress={onCameraPress}
       />
     </View>
-    </SafeAreaView>
+    </View>
 
   );
 };
@@ -200,16 +196,19 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   imageProfile: {
+
     marginTop: 10,
     width: 100,
     height: 100,
     borderRadius: 50,
     margin: 'auto',
+    zIndex:1
   },
   iconCam: {
     position: 'absolute',
-    top: 76,
-    left: '60%',
+    top: 80,
+    left: '67%',
+    zIndex:999
   },
   btnPickDate:{
     backgroundColor:"#EEC591",

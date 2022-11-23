@@ -71,6 +71,17 @@ const DATA = [
     title: 'Lịch Sử Quét',
     icon: 'history',
     page: 'LichSuQuet',
+  }, {
+    id: '586943da1-471f-bd29d72',
+    title: 'Tạo tài khoản',
+    icon: 'plus',
+    page: 'AddAccount',
+  },
+   {
+    id: '586943da1-471f-b72',
+    title: 'Danh sách tài khoản',
+    icon: 'users',
+    page: 'ManageAccount',
   },
 
 ];

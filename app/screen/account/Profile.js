@@ -58,7 +58,7 @@ export default Profile = () => {
     <SafeAreaView style={{paddingVertical: 28, backgroundColor: 'white', flex: 1}}>
       <View syle={styles.container}>
         <View style={styles.headerContainer}>
-          <Image source={Images.images.anhbaidoxe} style={styles.imageProfile}></Image>
+        <Image style ={styles.imageProfile} source={{uri: (user?.code !="string" ? `data:image/jpg;base64,${user?.code}`  : "https://cdn.chanhtuoi.com/uploads/2022/01/hinh-avatar-nam-deo-kinh.jpg")}}></Image>
           <View style={{padding: 4, marginLeft: 15}}>
             <Text style={{textAlignVertical: 'center', fontSize: 26, fontWeight: '700'}}>{user?.fullName}</Text>
           </View>
