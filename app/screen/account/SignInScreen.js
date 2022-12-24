@@ -11,6 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5Pro';
 import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '@app/redux/global/Actions';
+import {Linking} from 'react-native'
 
 const SignInScreen = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const SignInScreen = () => {
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [showEye, setShowEye] = useState(false);
-  const [loading,setLoading] = useState(true)
+  const [loading,setLoading] = useState(false)
   
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const SignInScreen = () => {
   }, []);
 
   const Login = async () => {
+    setLoading(true)
     const rs = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/Users/Login`, {userName, password});
     console.log(userName, password);
     if (rs.data) {
@@ -55,11 +57,13 @@ const SignInScreen = () => {
         }
 
       }
-      
+      setLoading(false)
       dispatch(actions.setUser(rs.data));
 
       navigation.navigate('HomeScreen');
     } else {
+      setLoading(false)
+
       alert('tài khoản mật khẩu không đúng');
     }
   };
@@ -91,6 +95,7 @@ const SignInScreen = () => {
 
         <View style={styles.textinputContent}>
           <TextInput
+            secureTextEntry={!showEye}
             style={styles.textinput}
             placeholderTextColor={Colors.gray60}
             placeholder={'nhập tài khoản'}
@@ -108,18 +113,9 @@ const SignInScreen = () => {
           }
         </View>
         <CheckBox title={'nhớ mật khẩu'} checked={checked} onPress={() => setChecked(pre => !pre)} />
-        <TDButtonPrimary title={'Đăng nhập'} contentStyle={{marginTop: 32}} onPress={Login} />
-        <TDDividerWithTitle title={'Or continue with'} contentStyle={{marginTop: 32, paddingHorizontal: 20}} />
+        <TDButtonPrimary title={'Đăng nhập'} contentStyle={{marginTop: 32}} onPress={Login}  loading={loading}/>
 
-        <View style={{marginTop: 32}}>
-          <TDButtonSecondary title={'Continue with Google'} image={Images.icons.google} onPress={() => {}} />
-          <TDButtonSecondary
-            title={'Continue with Apple'}
-            image={Images.icons.apple}
-            contentStyle={{marginTop: 16}}
-            onPress={() => {}}
-          />
-        </View>
+
         <View
           style={{
             paddingTop: 50,
@@ -127,12 +123,12 @@ const SignInScreen = () => {
             justifyContent: 'center',
             flexDirection: 'row',
           }}>
-          <Text style={{color: '#6C6C6C', fontSize: 16}}>{'Don’t have an account? '}</Text>
+          <Text style={{color: '#6C6C6C', fontSize: 16}}>{'Liên hệ Admin để cấp tài khoản? '}</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('SignUpScreen');
             }}>
-            <Text style={{color: Colors.primary, fontSize: 16, fontWeight: 'bold'}}>Sign Up</Text>
+            <Text style={{color: Colors.primary, fontSize: 16, fontWeight: 'bold'}} onPress={()=>Linking.openURL(`tel:0828803754`)}>Gọi</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

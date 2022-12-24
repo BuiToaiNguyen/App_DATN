@@ -56,9 +56,11 @@ alert("có lỗi xảy ra")
       const price = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Prices/byuser/${id}`);
       setDailyTicket(price.data[0]);
       setMonthlyTicket(price.data[1])
+      console.log(price)
+      setLoading(false)
+
         };
     func();
-    setLoading(false)
   }, [id]);
   return (
     <View style={{flex: 1, backgroundColor: Colors.bluish}}>
@@ -76,9 +78,11 @@ alert("có lỗi xảy ra")
             onPress={() => {}}></TouchableOpacity>
         )}
       />
-      {loading || monthlyTicket  == null ? (
-        <ActivityIndicator />
-      ) : (
+      { 
+      monthlyTicket!= null && !loading?
+      (
+       
+      
         <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
           <Image source={Images.images.anhbaidoxe} style={styles.imageIntro}></Image>
 
@@ -107,7 +111,7 @@ alert("có lỗi xảy ra")
           <Text style={{color: Colors.error, fontSize: Fonts.size.medium_bold}}>{error}</Text>
           <TDButtonPrimary title={'Hoàn Tất'} contentStyle={{marginTop: 32}} onPress={btnOk} />
         </ScrollView>
-      )}
+      ): <ActivityIndicator size="large"/> }
     </View>
   );
 };

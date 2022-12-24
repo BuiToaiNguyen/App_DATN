@@ -59,6 +59,17 @@ const GLOBAL_API = {
         console.log(error);
         return {data: null};
       });
+  },  
+  requestDelete: async urlService => {
+    return await axios
+      .delete(urlService)
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return {data: null};
+      });
   },
   requestPUT: async (URL, data) => {
     return await axios({

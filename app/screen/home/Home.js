@@ -9,9 +9,10 @@ import { Header } from '@app/components';
 import { Colors, Fonts } from '@app/themes';
 import { useSelector } from 'react-redux';
 
+
 const Home = () => {
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:"#87CEEB"}} >
+    <SafeAreaView style={{flex:1,backgroundColor:"#6E7B8B"}} >
 
       <ScrollView>
         {/* <Search /> */}

@@ -6,7 +6,7 @@ import {Colors, Fonts} from '@app/themes';
 
 const TDButtonPrimary = ({loading,contentStyle, titleStyle, imageStyle, title, image, onPress , ...props}) => {
   return (
-    <TouchableOpacity style={[styles.content, contentStyle]} onPress={onPress} disabled={loading}>
+    <TouchableOpacity style={[styles.content, contentStyle,{opacity:loading?0.5:1}]} onPress={onPress} disabled={loading}>
       {image && <Image source={image} style={[styles.image, imageStyle]} />}
       <Text style={[styles.text, {marginStart: image ? 10 : 0}, titleStyle]}>{title ?? ''}</Text>
     </TouchableOpacity>

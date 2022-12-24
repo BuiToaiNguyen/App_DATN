@@ -6,7 +6,7 @@ import * as actions from '@app/redux/global/Actions';
 import {useFocusEffect} from '@react-navigation/native';
 import {setUser} from '../../redux/global/Actions';
 import Modal from 'react-native-modal';
-import {ImagePickerModal} from './Modal';
+import {ImagePickerModal} from './../account/Modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 import React, {useState} from 'react';
@@ -35,76 +35,110 @@ import {REACT_APP_URL} from '@app/config/Config';
 const AddUser = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.global.userInfo);
-  const [userName,setUserName] = useState(null)
-  const [password,setPassword] = useState(null)
-  const [passwordConfirm,setPasswordConfirm] = useState(null)
-  const [error,setError] = useState("")
-  const [isLoading,setIsLoading] = useState(false)
+  const [userName, setUserName] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [passwordConfirm, setPasswordConfirm] = useState(null);
+  const [numberPhone, setNumberPhone] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [fullName, setFullName] = useState(null);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [pickerResponse, setPickerResponse] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [image,setImage] = useState(null)
+  const onImageLibraryPress = useCallback(() => {
+    const options = {
+      selectionLimit: 1,
+      mediaType: 'photo',
+      includeBase64: true,
+    };
+    launchImageLibrary(options, setPickerResponse);
+  }, []);
 
-const btnAdd = async ()=>{
-if(userName == null || userName=="")
-{
-  setError("vui lòng nhập tài khoản")
-  return;
-}
-if(password==null || password ==""){
-  setError("vui lòng nhập mật khẩu")
-  return;
-}
-if(passwordConfirm==null || passwordConfirm ==""){
-  setError("vui lòng nhập lại tài khoản")
-  return;
-}
+  const onCameraPress = useCallback(() => {
+    const options = {
+      saveToPhotos: false,
+      mediaType: 'photo',
+      includeBase64: true,
+    };
+    launchCamera(options, setPickerResponse);
+  }, []);
+  useEffect(() => {
+    pickerResponse?.assets &&
+      RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
+        setImage(res)
+      });
+  }, [pickerResponse]);
 
-if(!/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/.test(userName)){
-  setError("vui lòng nhập đúng định dạng tài khoản")
-  return;
-}
-if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
-  setError("mật khẩu phải 8 có kí tự, có hoa và thường")
-  return;
-}
-if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(passwordConfirm)){
-  setError("mật khẩu nhập lại phải 8 có kí tự, có hoa và thường")
-  return;
-}
-if(password!=passwordConfirm){
-  setError("vui lòng nhập lại không trùng khớp")
-}
+  const btnAdd = async () => {
+    if (userName == null || userName == '') {
+      setError('vui lòng nhập tài khoản');
+      return;
+    }
+    if (password == null || password == '') {
+      setError('vui lòng nhập mật khẩu');
+      return;
+    }
+    if (passwordConfirm == null || passwordConfirm == '') {
+      setError('vui lòng nhập lại tài khoản');
+      return;
+    }
 
-const res = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/Users/user?userName=${userName}`,userName)
-console.log(res);
-if(res.data){
-  setError("Tài khoản đã tồn tại")
-  return ;
-}
-setError("")
+    if (!/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/.test(userName)) {
+      setError('vui lòng nhập đúng định dạng tài khoản');
+      return;
+    }
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+      setError('mật khẩu phải 8 có kí tự, có hoa và thường');
+      return;
+    }
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(passwordConfirm)) {
+      setError('mật khẩu nhập lại phải 8 có kí tự, có hoa và thường');
+      return;
+    }
+    if (password != passwordConfirm) {
+      setError('vui lòng nhập lại không trùng khớp');
+    }
 
-const data = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/users`,{userName,passWord:password})
-if(data.data){
-  alert("thêm người dùng thành công")
-  navigation.goBack()
-}
+    const res = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/Users/user?userName=${userName}`, userName);
+    console.log(res);
+    if (res.data) {
+      setError('Tài khoản đã tồn tại');
+      return;
+    }
+    setError('');
 
-}
-  return(
-  <View style={{flex: 1}}>
-    <Header
-      title="Thêm người dùng"
-      isStack={true}
-      RightComponent={() => (
-        <TouchableOpacity
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 24,
-            height: 24,
-          }}
-          onPress={() => {}}></TouchableOpacity>
-      )}
-    />
+    const data = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/users`, {
+      userName,
+      passWord: password,
+      numberPhone,
+      address,
+      fullName,
+      code:image
+    });
+    if (data) {
+      alert('thêm người dùng thành công');
+      navigation.goBack();
+    }
+  };
+  return (
+    <View style={{flex: 1}}>
+      <Header
+        title="Thêm người dùng"
+        isStack={true}
+        RightComponent={() => (
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 24,
+              height: 24,
+            }}
+            onPress={() => {}}></TouchableOpacity>
+        )}
+      />
       <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Nhập tài khoản *'}</Text>
+          <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập tài khoản *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -114,8 +148,9 @@ if(data.data){
             value={userName}
             onChangeText={text => setUserName(text)}
           />
+                
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Nhập mật khẩu *'}</Text>
+        <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập mật khẩu *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -127,7 +162,7 @@ if(data.data){
             onChangeText={text => setPassword(text)}
           />
         </View>
-                <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Nhập lại mật khẩu *'}</Text>
+        <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập lại mật khẩu *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -139,13 +174,69 @@ if(data.data){
             onChangeText={text => setPasswordConfirm(text)}
           />
         </View>
-        <Text style={{color: Colors.error, fontSize: Fonts.size.medium_bold}}>{error}</Text>
-
-        <TDButtonPrimary loading={isLoading} title={'Thêm người dùng'} contentStyle={{marginTop: 32}} onPress={btnAdd} />
-
-        </ScrollView>
-  </View>
-  )
+  
+        <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập họ tên'}</Text>
+        <View style={styles.textinputContent}>
+          <TextInput
+            multiline={false}
+            style={styles.textinput}
+            placeholderTextColor={Colors.gray60}
+            placeholder={'nhập họ tên'}
+            value={fullName}
+            onChangeText={text => setFullName(text)}
+          />
+        </View>
+        <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập số điện thoại'}</Text>
+        <View style={styles.textinputContent}>
+          <TextInput
+            multiline={false}
+            style={styles.textinput}
+            placeholderTextColor={Colors.gray60}
+            placeholder={'nhập số điện thoại'}
+            value={numberPhone}
+            onChangeText={text => setNumberPhone(text)}
+          />
+        </View> 
+        <Text style={{color: Colors.black, fontSize: 18}}>{'Nhập địa chỉ'}</Text>
+        <View style={styles.textinputContent}>
+          <TextInput
+            multiline={false}
+            style={styles.textinput}
+            placeholderTextColor={Colors.gray60}
+            placeholder={'nhập địa chỉ'}
+            value={address}
+            onChangeText={text => setAddress(text)}
+          />
+        </View>  
+        <Pressable
+            onPress={() => {
+              setVisible(true);
+            }}>
+            <Text
+              style={{backgroundColor: Colors.darkGray, width: 100, fontSize: 21, padding: 5, color: 'white', borderRadius: 15}}>
+              {'Chọn ảnh'}
+            </Text>
+          </Pressable>
+          {image != null &&
+          
+          <Image
+            style={{width: 50, height: 50}}
+            source={{
+              uri:
+                  `data:image/jpg;base64,${image}`
+            }}></Image>
+          }
+        <Text style={{color: Colors.error, fontSize: 18}}>{error}</Text>
+        <TDButtonPrimary loading={isLoading} title={'Thêm người dùng'} contentStyle={{marginTop: 32, marginBottom:30}} onPress={btnAdd} />
+      </ScrollView>
+      <ImagePickerModal
+        isVisible={visible}
+        onClose={() => setVisible(false)}
+        onImageLibraryPress={onImageLibraryPress}
+        onCameraPress={onCameraPress}
+      />
+    </View>
+  );
 };
 const styles = StyleSheet.create({
   textinputContent: {
@@ -155,19 +246,19 @@ const styles = StyleSheet.create({
     height: 52,
     backgroundColor: Colors.secondary,
     paddingHorizontal: 10,
-    marginTop: 10,
+    marginTop: 10
   },
   textinput: {
     ...Fonts.style.large_regular,
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 10
   },
   btnPickDate: {
     backgroundColor: '#EEC591',
     width: 150,
     textAlignVertical: 'center',
     borderRadius: 40,
-    marginTop:10
+    marginTop: 10
   },
 });
 export default AddUser;

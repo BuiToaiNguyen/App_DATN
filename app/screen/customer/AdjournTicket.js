@@ -118,7 +118,8 @@ console.log(ghv)
       ) : (
         <ScrollView style={{flex: 1, padding: 10}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
           <View style={styles.containerProfile}>
-            <Image source={Images.images.anhbaidoxe} style={styles.imageProfile}></Image>
+            <Image source={{                  uri:`data:image/jpg;base64,${customer?.code}`
+}} style={styles.imageProfile}></Image>
           </View>
           <View style={styles.textContainer}>
             <Text style={{fontSize: 16}}>{'Tên khách hàng :'}</Text>
@@ -132,14 +133,14 @@ console.log(ghv)
             <CheckBox
               onPress={cbDailyClick}
               checked={cbDaily}
-              title="Vé ngày"
+              title="Theo ngày"
               iconRight
               checkedColor="green"
               backgroundColor={Colors.transparent}></CheckBox>
             <CheckBox
               onPress={cbMonthlyClick}
               checked={cbMonthly}
-              title="Vé tháng"
+              title="Theo tháng"
               iconRight
               checkedColor="green"
               backgroundColor={Colors.transparent}></CheckBox>

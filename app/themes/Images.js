@@ -5,6 +5,9 @@ const Images = {
   icons: {
     google: require('@app/assets/images/google.png'),
     apple: require('@app/assets/images/apple.png'),
+    gallery:require('@app/assets/images/thuvienanh.png'),
+    camera:require('@app/assets/images/camera.png'),
+
   },
 };
 

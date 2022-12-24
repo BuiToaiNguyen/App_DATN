@@ -27,17 +27,22 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 // import debounce from 'lodash';
 
-const Item = ({navigation, name, licesePlate, day , id}) => (
+const Item = ({navigation, name, licesePlate, day , id,code}) => (
   <Pressable
     style={styles.itemContainer}
     onPress={() => {
       navigation.navigate('ChiTietKhachHang', {idCustomer: id});
     }}>
     <View style={styles.imageContainer}>
-      <Image source={{uri:`data:image/jpg;base64,${IMAGEBASE64}`}} style={styles.imageItem}></Image>
+      <Image source={{
+        uri:
+        code != "string" && code !=null? 
+      `data:image/jpg;base64,${code}`: 'https://cdn.chanhtuoi.com/uploads/2022/01/hinh-avatar-nam-deo-kinh.jpg'
+
+    }} style={styles.imageItem}></Image>
     </View>
     <View style={styles.containerText}>
-      <Text style={{fontSize: 18, height: '25%', color: Colors.gray70, fontWeight: 'bold'}}>{name}</Text>
+      <Text style={{fontSize: 18, height: '25%', color: "white", fontWeight: 'bold'}}>{name}</Text>
       <Text style={{fontSize: 25, height: '50%', color: 'red', textAlignVertical: 'center'}}>{licesePlate}</Text>
       <Text style={{fontSize: 13, height: '25%'}}>{`${ tinhNgay(day) !=-1? "Còn "+Math.ceil(tinhNgay(day)) +" ngày" :" Chưa đăng ký vé" } `}</Text>
     </View>
@@ -61,7 +66,7 @@ const ListCustomer = () => {
     const func = async () => {
       try {
         console.log(REACT_APP_URL + `api/customers/byUSer/${id}`);
-        const data = await GLOBAL_API.requestGET(`http://192.168.2.136:7207/api/Tickets/ByIdCustomer2/${id}`);
+        const data = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Tickets/ByIdCustomer2/${id}`);
         setDataCustomers(data.data);
       } catch (error) {
         console.log(error);
@@ -75,7 +80,7 @@ const ListCustomer = () => {
   
     if(dataCustomers){
       
-      const data = (dataCustomers.filter(item=>item.customer.nameCustomer.toLowerCase().includes(search.toLowerCase()) ))
+      const data = (dataCustomers.filter(item=> item.customer.nameCustomer.toLowerCase().includes(search.toLowerCase() ) ||  item.customer.licensePlate.toLowerCase().includes(search.toLowerCase()) ))
       setDataCustomers2(data)
     }
   },[search,dataCustomers])
@@ -85,7 +90,7 @@ const ListCustomer = () => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <View style={{backgroundColor: '#AFEEEE', flex: 1}}>
+        <View style={{backgroundColor: '#6E7B8B', flex: 1}}>
           <View style={styles.headerContainer}>
             <TouchableOpacity
               style={{
@@ -110,7 +115,7 @@ const ListCustomer = () => {
               />
             </TouchableOpacity>
 
-            <View style={{width: '100%',backgroundColor: '#AFEEEE',}}>
+            <View style={{width: '100%',backgroundColor: '#6E7B8B',}}>
               <SearchBar
                 placeholder="Tìm Kiếm Khách Hàng ..."
                 size={30}
@@ -120,7 +125,10 @@ const ListCustomer = () => {
               />
             </View>
           </View>
-          <ScrollView style={{}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+          {
+            dataCustomers !=null
+            ?
+          <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
             <Text style={{fontSize: 25, marginLeft: 10}}>Danh sách khách hàng</Text>
             <View style={{}}>
               {dataCustomers2 &&
@@ -131,10 +139,16 @@ const ListCustomer = () => {
                     name={item?.customer.nameCustomer}
                     id={item?.customer.id}
                     licesePlate={item?.customer.licensePlate}
-                    key={item.id}></Item>
+                    key={item?.customer?.id}
+                    code={item?.customer?.code}
+                    >
+
+                    </Item>
                 ))}
             </View>
           </ScrollView>
+          :<ActivityIndicator size='large'/>
+          }
         </View>
       )}
     </SafeAreaView>

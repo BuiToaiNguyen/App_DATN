@@ -43,22 +43,29 @@ useFocusEffect(React.useCallback(() => {
 
 },[idCustomer]))
 
-const deleteCustomer = ()=>{
+const deleteCustomer = async ()=>{
 
-
-  
-    console.log("xử lí xoá ")
+  console.log("xử lí xoá ")
+  dataCustomer.isDelete=true
+  const rs = await GLOBAL_API.requestPUT(`${REACT_APP_URL}api/Customers/${idCustomer}`,dataCustomer)
+  setIsDelete(false)
+  if(rs?.id){
+    alert("xoá thành công")
+    navigation.goBack();
+  }
+  else{
+    alert("xoá không thành công")
+  }
 }
 
 
 
 const editCustomer =async ()=>{
-  const {idCustomer} = route.params
   const rs = await GLOBAL_API.requestPUT(`${REACT_APP_URL}api/Customers/${idCustomer}`,dataCustomer)
   console.log(rs)
   if(rs?.id){
     alert("sửa thành công")
-    navigation.navigate();
+    navigation.goBack();
   }
   else{
     alert("sửa không thành công")
@@ -91,7 +98,10 @@ const editCustomer =async ()=>{
 
 
         <View style={styles.containerProfile}>
-          <Image source={Images.images.anhbaidoxe} style={styles.imageProfile}></Image>
+          <Image source={{uri:
+            `data:image/jpg;base64,${dataCustomer?.code}`
+
+          }} style={styles.imageProfile}></Image>
           <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold, marginVertical:10}}>{ticket?.status=="chưa"?"Chưa đăng ký!":(`${ tinhNgay(ticket?.hanVe) !=-1? "Còn "+Math.ceil(tinhNgay(ticket?.hanVe)) +" ngày" :"Chưa đăng ký vé" } `)}</Text>
             <Pressable  style={({ pressed }) => [
           {
@@ -192,7 +202,7 @@ const editCustomer =async ()=>{
         
         
           
-      </ScrollView>):<ActivityIndicator/>
+      </ScrollView>):<ActivityIndicator size='large'/>
         }
     </View>
     :

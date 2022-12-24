@@ -38,11 +38,16 @@ export default Profile = () => {
       icon: 'lock',
       screen: 'ChangePasswordScreen',
     },
+    // {
+    //   title: 'Quên mật khẩu',
+    //   icon: 'unlock',
+    //   screen: 'ForgotScreen',
+    // },
     {
-      title: 'Quên mật khẩu',
-      icon: 'unlock',
-      screen: 'ForgotScreen',
-    },
+      title:"Liên hệ",
+      icon:"phone",
+      screen:"LienHe"
+    }
   ];
   const LogOut = async () => {
     try {

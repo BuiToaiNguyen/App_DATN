@@ -3,8 +3,90 @@ import {SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, Toucha
 import {Colors, Images} from '@app/themes';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Thêm Khách Hàng',
+    icon: 'user-plus',
+    page: 'ThemKhachHang',
+  },
+  // {
+  //   id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+  //   title: 'Gia Hạn Vé ',
+  //   icon: 'ticket',
+  //   page: 'GiaHanVe',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d72',
+  //   title: 'Xem Xe Đăng Ký',
+  //   icon: 'car',
+  //   page: 'XemXeDangKy',
+  // },
+  {
+    id: '58694a0f-3da1-471f-bd96-14e29d72',
+    title: 'Xem Khách Hàng',
+    icon: 'list',
+    page: 'DanhSachKhachHang',
+  },  
+
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d73',
+  //   title: 'Xem Tài Khoản',
+  //   icon: 'user',
+  //   page: 'XemTaiKhoan',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d75',
+  //   title: 'Chụp Biển Sô',
+  //   icon: 'camera',
+  //   page: 'ChupBienSo',
+  // },
+  // {
+  //   id: '58694a0f-3da1-471f-bd96-145571e29d',
+  //   title: 'Chính Sách Bảo Mật',
+  //   icon: 'shield',
+  //   page: 'ChinhSacBaoMat',
+  // },
+  // {
+  //   id: '58694a0f-3da1-1f-bd96-145571e29d',
+  //   title: 'Thống Kê Doanh Thu ',
+  //   icon: 'file-chart-pie',
+  //   page: 'ThongKeDoanhThu',
+  // },
+  {
+    id: '58694a0f-3da1-1f45571e29d',
+    title: 'Quán Lý Giá Vé',
+    icon: 'ticket',
+    page: 'QuanLyGiaVe',
+  }, 
+  {
+    id: '5860f-3da1-1f45571e29d',
+    title: 'Chụp Biển Số',
+    icon: 'camera',
+    page: 'ChupBienSo',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd29d72',
+    title: 'Lịch Sử Quét',
+    icon: 'history',
+    page: 'LichSuQuet',
+  // }, {
+  //   id: '586943da1-471f-bd29d72',
+  //   title: 'Tạo tài khoản',
+  //   icon: 'plus',
+  //   page: 'AddAccount',
+  // },
+  //  {
+  //   id: '586943da1-471f-b72',
+  //   title: 'Danh sách tài khoản',
+  //   icon: 'users',
+  //   page: 'ManageAccount',
+   },
+
+];
+const DATAAdmin = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Thêm Khách Hàng',
@@ -82,7 +164,7 @@ const DATA = [
     title: 'Danh sách tài khoản',
     icon: 'users',
     page: 'ManageAccount',
-  },
+   },
 
 ];
 
@@ -107,6 +189,8 @@ const Item = ({title, icon, page}) => {
 
 const List = () => {
   const renderItem = ({item}) => <Item title={item.title} />;
+  const userInfo = useSelector(state => state.global.userInfo);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={{fontSize: 25, marginVertical: 10,color:'white',marginLeft:10}}>Danh mục</Text>
@@ -116,11 +200,23 @@ const List = () => {
           borderBottomWidth: StyleSheet.hairlineWidth,
         }}
       />
+      {
+        userInfo?.permission==0?
+        (
+
       <View style={styles.buttonTouch}>
         {DATA.map(item => (
           <Item title={item.title} icon={item.icon} key={item.id} page={item.page}></Item>
         ))}
+      </View> 
+        ) :(
+       <View style={styles.buttonTouch}>
+        {DATAAdmin.map(item => (
+          <Item title={item.title} icon={item.icon} key={item.id} page={item.page}></Item>
+        ))}
       </View>
+        )
+      }
     </SafeAreaView>
   );
 };

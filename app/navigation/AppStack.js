@@ -15,6 +15,9 @@ import ChupBienSo from '@app/screen/camera/ChupBienSo';
 import {SignInScreen, SignInEmailScreen, SignUpScreen, ForgotScreen, ChangePasswordScreen, Account} from '@app/screen/account';
 import AddUser from '@app/screen/admin/AddUser';
 import ManageAccount from '@app/screen/admin/ManageAccount';
+import EditAccount from '@app/screen/admin/EditAccount';
+import HistoryScan from '@app/screen/history/HistoryScan';
+import LienHe from '@app/screen/account/LienHe';
 
 const AppStack = () => {
   const navigation = useNavigation();
@@ -37,6 +40,10 @@ const AppStack = () => {
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="ManageAccount" component={ManageAccount} />
+      <Stack.Screen name="AddAccount" component={AddUser} />
+      <Stack.Screen name="EditAccount" component={EditAccount} />
+      <Stack.Screen name="LichSuQuet" component={HistoryScan} />
+      <Stack.Screen name="LienHe" component={LienHe} />
     </Stack.Navigator>
   );
 };

@@ -16,7 +16,6 @@ import {TDButtonNavigation} from '../components';
 import { Main_Cam } from './../screen/camera/Main_Cam';
 import Home from '@app/screen/home/Home';
 import { Profile } from '@app/screen/account';
-
 const PlusScreen = () => {
   return null;
 };
@@ -59,8 +58,8 @@ const AppBottomTab = () => {
         }}
       />
 
-      <Tab.Screen
-        name="CameraScreen"
+      {/* <Tab.Screen
+        name="ChupBienSo"
         component={Main_Cam}
         options={{
           headerShown: false,
@@ -77,10 +76,8 @@ const AppBottomTab = () => {
             </View>
           ),
         }}
-      />
-
-     
-      <Tab.Screen
+      /> */}     
+      {/* <Tab.Screen
         name="SettingScreen"
         component={MAIN_SettingScreen}
         options={{
@@ -95,7 +92,7 @@ const AppBottomTab = () => {
             />
           ),
         }}
-      />
+      /> */}
        <Tab.Screen
         name="NhacNhoScreen"
         component={Profile}

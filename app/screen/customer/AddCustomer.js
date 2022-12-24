@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Pressable} from 'react-native';
+import React, {useState,useCallback} from 'react';
+import {StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Pressable,Image} from 'react-native';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Colors, Fonts, Images} from '@app/themes';
@@ -11,6 +11,9 @@ import {REACT_APP_URL} from '@app/config/Config';
 import DatePicker from 'react-native-date-picker';
 import { getAge } from '@app/utils/FuncHelper';
 import { useSelector } from 'react-redux';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { ImagePickerModal } from './../account/Modal';
+import RNFS  from 'react-native-fs';
 
 const AddCustomer = () => {
   const {id} = useSelector(state => state.global.userInfo);
@@ -20,14 +23,39 @@ const AddCustomer = () => {
   const [addressCustomer, setAddressCustomer] = useState(null);
   const [numPhoneCustomer, setNumPhoneCustomer] = useState("");
   const [nameCar, setNameCar] = useState(null);
-  const [licensePlate, setLincesePlate] = useState("59-P1-66480");
+  const [licensePlate, setLincesePlate] = useState("");
   const [error, setError] = useState('');
   const [focus, setFocus] = useState('nameCustomer');
 
   const [dateCustomer, setDateCustomer] = useState(new Date())
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [pickerResponse, setPickerResponse] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [image,setImage] = useState(null)
+  const onImageLibraryPress = useCallback(() => {
+    const options = {
+      selectionLimit: 1,
+      mediaType: 'photo',
+      includeBase64: true,
+    };
+    launchImageLibrary(options, setPickerResponse);
+  }, []);
 
+  const onCameraPress = useCallback(() => {
+    const options = {
+      saveToPhotos: false,
+      mediaType: 'photo',
+      includeBase64: true,
+    };
+    launchCamera(options, setPickerResponse);
+  }, []);
+  useEffect(() => {
+    pickerResponse?.assets &&
+      RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
+        setImage(res)
+      });
+  }, [pickerResponse]);
   strRegex =
     /(^[0-9]{2}-?[0-9A-Z]{1,3}$)|(^[A-Z0-9]{2,5}$)|(^[0-9]{2,3}-[0,9]{2}$)|(^[A-Z0-9]{2,3}-?[0-9]{4,5}$)|(^[A-Z]{2}-?[0-9]{0,4}$)|(^[0-9]{2}-?[A-Z0-9]{2,3}-?[A-Z0-9]{2,3}-?[0-9]{2}$)|(^[A-Z]{2}-?[0-9]{2}-?[0-9]{2}$)|(^[0-9]{3}-?[A-Z0-9]{2}$)$/;
   const btnAdd = async () => {
@@ -65,7 +93,8 @@ const AddCustomer = () => {
       numberPhone: numPhoneCustomer,
       idUser:id,
       address: addressCustomer,
-      age :getAge(dateCustomer)
+      age :ageCustomer,
+      code:image
     };
     console.log(customer)    
     setIsLoading(true)
@@ -99,8 +128,8 @@ const AddCustomer = () => {
             onPress={() => {}}></TouchableOpacity>
         )}
       />
-      <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Tên Khách Hàng *'}</Text>
+      <ScrollView style={{flex: 1, padding: 16 }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tên Khách Hàng *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -112,7 +141,7 @@ const AddCustomer = () => {
             onChangeText={text => setNameCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Tuổi Khách Hàng'}</Text>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tuổi Khách Hàng'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -124,7 +153,7 @@ const AddCustomer = () => {
             keyboardType="numeric"
           />
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Địa Chỉ'}</Text>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Địa Chỉ'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -135,7 +164,7 @@ const AddCustomer = () => {
             onChangeText={text => setAddressCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Số Điện Thoại *'}</Text>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Số Điện Thoại *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -148,7 +177,7 @@ const AddCustomer = () => {
             onChangeText={text => setNumPhoneCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Tên Xe'}</Text>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tên Xe'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -159,7 +188,7 @@ const AddCustomer = () => {
             onChangeText={text => setNameCar(text)}
           />
         </View>
-        <Text style={{color: Colors.gray70, fontSize: Fonts.size.medium_bold}}>{'Biển Số *'}</Text>
+        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Biển Số *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -171,7 +200,7 @@ const AddCustomer = () => {
             onChangeText={text => setLincesePlate(text)}
           />
         </View>
-        <Pressable onPress={() => setOpen(true)} style={styles.btnPickDate}>
+        {/* <Pressable onPress={() => setOpen(true)} style={styles.btnPickDate}>
           <Text style={{textAlign: 'center', padding: 10}}>Chọn ngày sinh</Text>
         </Pressable>
         <DatePicker
@@ -186,11 +215,35 @@ const AddCustomer = () => {
           onCancel={() => {
             setOpen(false);
           }}
-        />
+        /> */}
+              <Pressable
+            onPress={() => {
+              setVisible(true);
+            }}>
+            <Text
+              style={{backgroundColor: Colors.darkGray, width: 100, fontSize: 18, padding: 5, color: 'white', borderRadius: 15}}>
+              {'Chọn ảnh'}
+            </Text>
+          </Pressable>
+          {image != null &&
+          
+          <Image
+            style={{width: 50, height: 50,marginTop:10,marginLeft:10}}
+            source={{
+              uri:
+                  `data:image/jpg;base64,${image}`
+            }}></Image>
+          }
         <Text style={{color: Colors.error, fontSize: Fonts.size.medium_bold}}>{error}</Text>
 
-        <TDButtonPrimary loading={isLoading} title={'Thêm Khách Hàng'} contentStyle={{marginTop: 32}} onPress={btnAdd} />
+        <TDButtonPrimary loading={isLoading} title={'Thêm Khách Hàng'} contentStyle={{marginTop: 32,marginBottom:30}} onPress={btnAdd} />
       </ScrollView>
+      <ImagePickerModal
+        isVisible={visible}
+        onClose={() => setVisible(false)}
+        onImageLibraryPress={onImageLibraryPress}
+        onCameraPress={onCameraPress}
+      />
     </View>
   );
 };

@@ -15,7 +15,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '@app/redux/global/Actions';
 import { useFocusEffect } from '@react-navigation/native';
 import { setUser } from './../../redux/global/Actions';
-import Modal from "react-native-modal";
 import { ImagePickerModal } from './Modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
