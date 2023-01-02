@@ -29,6 +29,7 @@ import {debounce} from 'lodash';
 
 const Item = ({item}) => {
   return (
+    <>
     <View style={{flex: 1, flexDirection: 'row', marginVertical: 10}}>
       <View style={{}}>
         <Image
@@ -41,11 +42,15 @@ const Item = ({item}) => {
           }}></Image>
       </View>
       <View style={{flex: 1, marginLeft: 5}}>
-        <Text style={{fontSize: 20, fontWeight: '600'}}>{item?.licensePlate}</Text>
-        <Text style={{fontSize: 18}}>Trạng thái: {item?.status == 1 ? 'còn hạn' : 'hết hạn hoặc chưa đăng ký'}</Text>
-        <Text style={{fontSize: 17, marginTop: 5}}>Thời gian: {item?.createAt} </Text>
+        <Text style={{fontSize: 25, fontWeight: '600',color:"white"}}>{item?.licensePlate}</Text>
+        <Text style={{fontSize: 18, color:item?.status == 1 ?"#66FF99":"#CC3300" }}>Trạng thái: {item?.status == 1 ? 'Còn hạn' : 'Hết hạn hoặc chưa đăng ký'}</Text>
+        <Text style={{fontSize: 17, marginTop: 5}}>Thời gian: {item?.createAt.split(".")[0]} </Text>
       </View>
     </View>
+    <View style={{height:1, backgroundColor:"black"}}></View>
+
+
+    </>
   );
 };
 const HistoryScan = () => {
@@ -57,19 +62,16 @@ const HistoryScan = () => {
   useFocusEffect(
     React.useCallback(() => {
       const func = async () => {
-        console.log(`${REACT_APP_URL}api/ActionScans/byUser/${user.id}`);
-        const dataScan = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/ActionScans/byUser/${user.id}`);
-        setDataScan(dataScan.data);
+        const data = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/ActionScans/byUser/${user.id}`);
+        setDataScan(data.data);
         setIsLoading(false);
-
-        console.log(dataScan.data)
       };
       func();
     }, []),
   );
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1,backgroundColor:"#6E7B8B"}}>
       <Header
         title="Lịch sử quét"
         isStack={true}
@@ -89,9 +91,9 @@ const HistoryScan = () => {
         <ActivityIndicator  size="large"/>
       ) : (
         <ScrollView style={{}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-          <Text style={{fontSize: 25, marginLeft: 10}}>{'Lịch sử quét'}</Text>
+          <Text style={{fontSize: 30, marginLeft: 10,color:"white"}}>{'Lịch sử quét'}</Text>
         
-          {dataScan.lenght > 0 && dataScan.map((item, index) => <Item key={index} item={item} />)}
+          {!isLoading && dataScan.map((item, index) => <Item key={index} item={item} />)}
         </ScrollView>
       )}
     </View>

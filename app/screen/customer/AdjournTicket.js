@@ -1,5 +1,17 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView,ActivityIndicator, Alert, Platform, Image, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+  Platform,
+  Image,
+  Pressable,
+} from 'react-native';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Colors, Fonts, Images} from '@app/themes';
@@ -10,9 +22,9 @@ import GLOBAL_API from './../services/apiServices';
 import {REACT_APP_URL} from '@app/config/Config';
 import {CheckBox} from 'react-native-elements';
 import {datediff, parseDate} from '@app/utils/FuncHelper';
-import { applyMiddleware } from 'redux';
-import { useFocusEffect } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {applyMiddleware} from 'redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const AdjournTicket = ({route}) => {
   const {id} = useSelector(state => state.global.userInfo);
@@ -27,9 +39,8 @@ const AdjournTicket = ({route}) => {
   const [customer, setCustomer] = useState(null);
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [dailyTicket,setDailyTicket] = useState(null)
-  const [monthlyTicket,setMonthlyTicket] = useState(null)
-
+  const [dailyTicket, setDailyTicket] = useState(null);
+  const [monthlyTicket, setMonthlyTicket] = useState(null);
 
   const cbDailyClick = () => {
     setCbDaily(pre => !pre);
@@ -52,23 +63,23 @@ const AdjournTicket = ({route}) => {
     func();
   }, [cbDaily, cbMonthly, soLuong]);
 
-  useFocusEffect(React.useCallback(() => {    
-    const idCustomer = route?.params?.id;
-    console.log(route);
-    const func = async () => {
-      const customer = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Customers/${idCustomer}`);
-      setCustomer(customer.data);
-      const ticket = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Tickets/ByIdCustomer/${idCustomer}`);
-      setTicket(ticket.data);
-      const price = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Prices/byuser/${id}`);
-      setDailyTicket(price.data[0]);
-      setMonthlyTicket(price.data[1])
-    };
-    func()
-    setLoading(false);
-  }, [route.params]));
-
- 
+  useFocusEffect(
+    React.useCallback(() => {
+      const idCustomer = route?.params?.id;
+      console.log(route);
+      const func = async () => {
+        const customer = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Customers/${idCustomer}`);
+        setCustomer(customer.data);
+        const ticket = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Tickets/ByIdCustomer/${idCustomer}`);
+        setTicket(ticket.data);
+        const price = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Prices/byuser/${id}`);
+        setDailyTicket(price.data[0]);
+        setMonthlyTicket(price.data[1]);
+      };
+      func();
+      setLoading(false);
+    }, [route.params]),
+  );
 
   function convertToMoney(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -84,16 +95,13 @@ const AdjournTicket = ({route}) => {
       return;
     }
     setError('');
-    const ghv={idTicket:ticket.id,
-    isDay:cbDaily,
-    count:soLuong
-  }
-  
-console.log(ghv)
-    const rs  =  await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/tickets/GiaHanVe`,ghv)
-  if(rs.data){
-    alert("gia hạn thành công")
-  }
+    const ghv = {idTicket: ticket.id, isDay: cbDaily, count: soLuong};
+
+    console.log(ghv);
+    const rs = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/tickets/GiaHanVe`, ghv);
+    if (rs.data) {
+      alert('gia hạn thành công');
+    }
 
     // call api
   };
@@ -118,8 +126,22 @@ console.log(ghv)
       ) : (
         <ScrollView style={{flex: 1, padding: 10}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
           <View style={styles.containerProfile}>
-            <Image source={{                  uri:`data:image/jpg;base64,${customer?.code}`
-}} style={styles.imageProfile}></Image>
+         
+         
+          {customer?.code != 'string' && customer?.code != null ? (
+                  <Image
+                    source={{
+                      uri: `data:image/jpg;base64,${customer?.code}`,
+                    }}
+                    style={styles.imageProfile}></Image>
+                ) : (
+                  <Image source={Images.icons.avatar} style={styles.imageProfile}></Image>
+                )}
+
+
+            {/* <Image source={{uri: `data:image/jpg;base64,${customer?.code}`}} style={styles.imageProfile}></Image> */}
+
+
           </View>
           <View style={styles.textContainer}>
             <Text style={{fontSize: 16}}>{'Tên khách hàng :'}</Text>

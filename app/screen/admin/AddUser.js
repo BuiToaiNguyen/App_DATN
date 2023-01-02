@@ -10,6 +10,8 @@ import {ImagePickerModal} from './../account/Modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 import React, {useState} from 'react';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+
 import {
   StyleSheet,
   Text,
@@ -64,10 +66,19 @@ const AddUser = () => {
     launchCamera(options, setPickerResponse);
   }, []);
   useEffect(() => {
-    pickerResponse?.assets &&
-      RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
-        setImage(res)
+
+    if (pickerResponse?.assets) {
+      ImageResizer.createResizedImage(pickerResponse.assets[0].uri, 200, 200, 'JPEG', 100, 0).then(response => {
+        RNFS.readFile(response.uri, 'base64')
+          .then(res => {
+            setImage(res);
+            setVisible(false);
+          })
+          .catch(err => {
+            console.log('có lỗi');
+          });
       });
+    }
   }, [pickerResponse]);
 
   const btnAdd = async () => {

@@ -1,11 +1,7 @@
-import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-import DatePicker from 'react-native-date-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {useSelector, useDispatch} from 'react-redux';
-import * as actions from '@app/redux/global/Actions';
 import {useFocusEffect} from '@react-navigation/native';
-import {setUser} from '../../redux/global/Actions';
-import Modal from 'react-native-modal';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 import React, {useState} from 'react';
@@ -83,10 +79,18 @@ const EditAccount = ({route}) => {
     }, [params]),
   );
   useEffect(() => {
-    pickerResponse?.assets &&
-      RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
-        setDataUser(pre => ({...pre, code: res}));
+    if (pickerResponse?.assets) {
+      ImageResizer.createResizedImage(pickerResponse.assets[0].uri, 200, 200, 'JPEG', 100, 0).then(response => {
+        RNFS.readFile(response.uri, 'base64')
+          .then(res => {
+            setDataUser(pre => ({...pre, code: res}));
+            setVisible(false);
+          })
+          .catch(err => {
+            console.log('có lỗi');
+          });
       });
+    }
   }, [pickerResponse]);
   const handleOk = async () => {
     console.log(dataUser);

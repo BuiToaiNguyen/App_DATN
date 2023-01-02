@@ -24,21 +24,30 @@ const SignInScreen = () => {
   
 
   useEffect(() => {
-
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('@user')
         console.log(jsonValue)
+
          const dataUser = jsonValue != null ? JSON.parse(jsonValue) : null;
-
          if(dataUser?.userName !=null && dataUser?.password !=null){
-
+          setUserName(dataUser.userName);
+          setPassword(dataUser.password);
+          setChecked(true);
           const rs = await GLOBAL_API.requestPOST(`${REACT_APP_URL}api/Users/Login`, {userName : dataUser?.userName , password:dataUser?.password});
-          dispatch(actions.setUser(rs.data));
-          navigation.navigate('HomeScreen');
+          if(rs.data){
+
+            dispatch(actions.setUser(rs.data));
+            navigation.navigate('HomeScreen');
+          }
+          else{
+            
+            alert("kiểm tra kết nối internet");
+          }
         }
       } catch(e) {
-      console.log(e)      }
+      console.log(e)      
+    }
     }
     getData()
   }, []);

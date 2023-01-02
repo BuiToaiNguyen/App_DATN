@@ -12,39 +12,44 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import {useEffect,useCallback} from 'react';
+import {useEffect, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Colors, Fonts, Images} from '@app/themes';
 import {TDButtonPrimary, TDButtonSecondary, TDDividerWithTitle, TDTextInputAccount} from '@app/components';
 import {Header} from '@app/components';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5Pro';
 import GLOBAL_API from './../services/apiServices';
-import {REACT_APP_URL,IMAGEBASE64} from '@app/config/Config';
+import {REACT_APP_URL, IMAGEBASE64} from '@app/config/Config';
 import {SearchBar} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {datediff, parseDate, tinhNgay} from '@app/utils/FuncHelper';
-import { useFocusEffect } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 // import debounce from 'lodash';
 
-const Item = ({navigation, name, licesePlate, day , id,code}) => (
+const Item = ({navigation, name, licesePlate, day, id, code}) => (
   <Pressable
     style={styles.itemContainer}
     onPress={() => {
       navigation.navigate('ChiTietKhachHang', {idCustomer: id});
     }}>
     <View style={styles.imageContainer}>
-      <Image source={{
-        uri:
-        code != "string" && code !=null? 
-      `data:image/jpg;base64,${code}`: 'https://cdn.chanhtuoi.com/uploads/2022/01/hinh-avatar-nam-deo-kinh.jpg'
-
-    }} style={styles.imageItem}></Image>
+      {code != 'string' && code != null ? (
+        <Image
+          source={{
+            uri: `data:image/jpg;base64,${code}`,
+          }}
+          style={styles.imageItem}></Image>
+      ) : (
+        <Image source={Images.icons.avatar} style={styles.imageItem}></Image>
+      )}
     </View>
     <View style={styles.containerText}>
-      <Text style={{fontSize: 18, height: '25%', color: "white", fontWeight: 'bold'}}>{name}</Text>
-      <Text style={{fontSize: 25, height: '50%', color: 'red', textAlignVertical: 'center'}}>{licesePlate}</Text>
-      <Text style={{fontSize: 13, height: '25%'}}>{`${ tinhNgay(day) !=-1? "Còn "+Math.ceil(tinhNgay(day)) +" ngày" :" Chưa đăng ký vé" } `}</Text>
+      <Text style={{fontSize: 19, height: '25%', color: 'white', fontWeight: 'bold'}}>{name}</Text>
+      <Text style={{fontSize: 25, height: '50%', color:  tinhNgay(day) <0 ? "red":"green" , textAlignVertical: 'center'}}>{licesePlate}</Text>
+      <Text style={{fontSize: 13, height: '25%' }}>{`${
+        tinhNgay(day) != -1 ? 'Còn ' + Math.floor(tinhNgay(day)) + ' ngày' : 'Hết hạn hoặc chưa đăng ký vé'
+      } `}</Text>
     </View>
   </Pressable>
 );
@@ -62,29 +67,33 @@ const ListCustomer = () => {
   const updateSearch = search => {
     setSearch(search);
   };
-  useFocusEffect(React.useCallback(() => {
-    const func = async () => {
-      try {
-        console.log(REACT_APP_URL + `api/customers/byUSer/${id}`);
-        const data = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Tickets/ByIdCustomer2/${id}`);
-        setDataCustomers(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    func();
-    setLoading(false);
-  }, [id]));
+  useFocusEffect(
+    React.useCallback(() => {
+      const func = async () => {
+        try {
+          console.log(REACT_APP_URL + `api/customers/byUSer/${id}`);
+          const data = await GLOBAL_API.requestGET(`${REACT_APP_URL}api/Tickets/ByIdCustomer2/${id}`);
+          setDataCustomers(data.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      func();
+      setLoading(false);
+    }, [id]),
+  );
 
-  useEffect(()=>{
-  
-    if(dataCustomers){
-      
-      const data = (dataCustomers.filter(item=> item.customer.nameCustomer.toLowerCase().includes(search.toLowerCase() ) ||  item.customer.licensePlate.toLowerCase().includes(search.toLowerCase()) ))
-      setDataCustomers2(data)
+  useEffect(() => {
+    if (dataCustomers) {
+      const data = dataCustomers.filter(
+        item =>
+          item.customer.nameCustomer.toLowerCase().includes(search.toLowerCase()) ||
+          item.customer.licensePlate.toLowerCase().includes(search.toLowerCase()),
+      );
+      setDataCustomers2(data);
     }
-  },[search,dataCustomers])
-  
+  }, [search, dataCustomers]);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {loading ? (
@@ -115,7 +124,7 @@ const ListCustomer = () => {
               />
             </TouchableOpacity>
 
-            <View style={{width: '100%',backgroundColor: '#6E7B8B',}}>
+            <View style={{width: '100%', backgroundColor: '#6E7B8B'}}>
               <SearchBar
                 placeholder="Tìm Kiếm Khách Hàng ..."
                 size={30}
@@ -125,30 +134,26 @@ const ListCustomer = () => {
               />
             </View>
           </View>
-          {
-            dataCustomers !=null
-            ?
-          <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-            <Text style={{fontSize: 25, marginLeft: 10}}>Danh sách khách hàng</Text>
-            <View style={{}}>
-              {dataCustomers2 &&
-                dataCustomers2.map(item => (
-                  <Item
-                    day={item.hanVe}
-                    navigation={navigation}
-                    name={item?.customer.nameCustomer}
-                    id={item?.customer.id}
-                    licesePlate={item?.customer.licensePlate}
-                    key={item?.customer?.id}
-                    code={item?.customer?.code}
-                    >
-
-                    </Item>
-                ))}
-            </View>
-          </ScrollView>
-          :<ActivityIndicator size='large'/>
-          }
+          {dataCustomers != null ? (
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+              <Text style={{fontSize: 25, marginLeft: 10}}>Danh sách khách hàng </Text>
+              <View style={{}}>
+                {dataCustomers2 &&
+                  dataCustomers2.map(item => (
+                    <Item
+                      day={item.hanVe}
+                      navigation={navigation}
+                      name={item?.customer.nameCustomer}
+                      id={item?.customer.id}
+                      licesePlate={item?.customer.licensePlate}
+                      key={item?.customer?.id}
+                      code={item?.customer?.code}></Item>
+                  ))}
+              </View>
+            </ScrollView>
+          ) : (
+            <ActivityIndicator size="large" />
+          )}
         </View>
       )}
     </SafeAreaView>

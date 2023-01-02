@@ -18,6 +18,7 @@ import { setUser } from './../../redux/global/Actions';
 import { ImagePickerModal } from './Modal';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 
 export default Account = () => {
     const dispatch = useDispatch()
@@ -49,9 +50,19 @@ export default Account = () => {
 
 
     useEffect(()=>{
-      pickerResponse?.assets  && RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
-        setDataUser(pre => ({...pre,code : res}))
+     
+    if (pickerResponse?.assets) {
+      ImageResizer.createResizedImage(pickerResponse.assets[0].uri, 100, 200, 'JPEG', 100, 0).then(response => {
+        RNFS.readFile(response.uri, 'base64')
+          .then(res => {
+            setDataUser(pre => ({...pre,code : res}))
+            setVisible(false);
+          })
+          .catch(err => {
+            console.log('có lỗi');
+          });
       });
+    }
     },[pickerResponse])
 
     //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
   iconCam: {
     position: 'absolute',
     top: 80,
-    left: '67%',
+    left: '60%',
     zIndex:999
   },
   btnPickDate:{

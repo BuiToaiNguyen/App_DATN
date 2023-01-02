@@ -13,6 +13,7 @@
     "clean-android": "cd android && rm -R .gradle && cd app && rm -R build"
   },
   "dependencies": {
+    "@bam.tech/react-native-image-resizer": "^3.0.4",
     "@manaflair/redux-batch": "^1.0.0",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/netinfo": "^9.3.4",

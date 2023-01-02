@@ -1,5 +1,5 @@
-import React, {useState,useCallback} from 'react';
-import {StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Pressable,Image} from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Pressable, Image} from 'react-native';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Colors, Fonts, Images} from '@app/themes';
@@ -9,30 +9,31 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5Pro';
 import GLOBAL_API from '@app/screen/services/apiServices';
 import {REACT_APP_URL} from '@app/config/Config';
 import DatePicker from 'react-native-date-picker';
-import { getAge } from '@app/utils/FuncHelper';
-import { useSelector } from 'react-redux';
+import {getAge} from '@app/utils/FuncHelper';
+import {useSelector} from 'react-redux';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import { ImagePickerModal } from './../account/Modal';
-import RNFS  from 'react-native-fs';
+import {ImagePickerModal} from './../account/Modal';
+import RNFS from 'react-native-fs';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 
 const AddCustomer = () => {
   const {id} = useSelector(state => state.global.userInfo);
-
-  const [nameCustomer, setNameCustomer] = useState("");
-  const [ageCustomer, setAgeCustomer] = useState("");
+  const navigation = useNavigation();
+  const [nameCustomer, setNameCustomer] = useState('');
+  const [ageCustomer, setAgeCustomer] = useState('');
   const [addressCustomer, setAddressCustomer] = useState(null);
-  const [numPhoneCustomer, setNumPhoneCustomer] = useState("");
+  const [numPhoneCustomer, setNumPhoneCustomer] = useState('');
   const [nameCar, setNameCar] = useState(null);
-  const [licensePlate, setLincesePlate] = useState("");
+  const [licensePlate, setLincesePlate] = useState('');
   const [error, setError] = useState('');
   const [focus, setFocus] = useState('nameCustomer');
 
-  const [dateCustomer, setDateCustomer] = useState(new Date())
-  const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [dateCustomer, setDateCustomer] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [image,setImage] = useState(null)
+  const [image, setImage] = useState(null);
   const onImageLibraryPress = useCallback(() => {
     const options = {
       selectionLimit: 1,
@@ -51,10 +52,18 @@ const AddCustomer = () => {
     launchCamera(options, setPickerResponse);
   }, []);
   useEffect(() => {
-    pickerResponse?.assets &&
-      RNFS.readFile(pickerResponse.assets[0].uri, 'base64').then(res => {
-        setImage(res)
+   if (pickerResponse?.assets) {
+      ImageResizer.createResizedImage(pickerResponse.assets[0].uri, 100, 300, 'JPEG', 100, 0).then(response => {
+        RNFS.readFile(response.uri, 'base64')
+          .then(res => {
+            setImage(res);
+            setVisible(false);
+          })
+          .catch(err => {
+            console.log('có lỗi');
+          });
       });
+    }
   }, [pickerResponse]);
   strRegex =
     /(^[0-9]{2}-?[0-9A-Z]{1,3}$)|(^[A-Z0-9]{2,5}$)|(^[0-9]{2,3}-[0,9]{2}$)|(^[A-Z0-9]{2,3}-?[0-9]{4,5}$)|(^[A-Z]{2}-?[0-9]{0,4}$)|(^[0-9]{2}-?[A-Z0-9]{2,3}-?[A-Z0-9]{2,3}-?[0-9]{2}$)|(^[A-Z]{2}-?[0-9]{2}-?[0-9]{2}$)|(^[0-9]{3}-?[A-Z0-9]{2}$)$/;
@@ -69,8 +78,8 @@ const AddCustomer = () => {
       setFocus('numPhoneCustomer');
       return;
     }
-    if(getAge(dateCustomer)<18){
-        setError('vui lòng chọn ngày sinh');
+    if (getAge(dateCustomer) < 18) {
+      setError('vui lòng chọn ngày sinh');
     }
     if (licensePlate == null || licensePlate == ' ') {
       setError('vui lòng nhập biển số');
@@ -86,31 +95,31 @@ const AddCustomer = () => {
     }
 
     setError('');
-    const  customer = {
+    const customer = {
       nameCustomer,
       licensePlate,
       nameCar,
       numberPhone: numPhoneCustomer,
-      idUser:id,
+      idUser: id,
       address: addressCustomer,
-      age :ageCustomer,
-      code:image
+      age: ageCustomer,
+      code: image,
     };
-    console.log(customer)    
-    setIsLoading(true)
+    console.log(customer);
+    setIsLoading(true);
     try {
-      const {data} =await GLOBAL_API.requestPOST(REACT_APP_URL+"api/Customers",customer)
-      console.log(data)
+      const {data} = await GLOBAL_API.requestPOST(REACT_APP_URL + 'api/Customers', customer);
+      console.log(data);
       if (data != null) {
         alert('Thêm khách hàng thành công !');
+        navigation.goBack();
       } else {
         alert('thêm thất bại');
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
   return (
     <View style={{flex: 1, backgroundColor: Colors.bluish}}>
@@ -128,8 +137,8 @@ const AddCustomer = () => {
             onPress={() => {}}></TouchableOpacity>
         )}
       />
-      <ScrollView style={{flex: 1, padding: 16 }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tên Khách Hàng *'}</Text>
+      <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Tên Khách Hàng *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -141,7 +150,7 @@ const AddCustomer = () => {
             onChangeText={text => setNameCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tuổi Khách Hàng'}</Text>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Tuổi Khách Hàng'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -153,7 +162,7 @@ const AddCustomer = () => {
             keyboardType="numeric"
           />
         </View>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Địa Chỉ'}</Text>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Địa Chỉ'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -164,7 +173,7 @@ const AddCustomer = () => {
             onChangeText={text => setAddressCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Số Điện Thoại *'}</Text>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Số Điện Thoại *'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -177,7 +186,7 @@ const AddCustomer = () => {
             onChangeText={text => setNumPhoneCustomer(text)}
           />
         </View>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Tên Xe'}</Text>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Tên Xe'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
@@ -188,13 +197,13 @@ const AddCustomer = () => {
             onChangeText={text => setNameCar(text)}
           />
         </View>
-        <Text style={{color: Colors.black, marginTop:0, fontSize: Fonts.size.regular}}>{'Biển Số *'}</Text>
+        <Text style={{color: Colors.black, marginTop: 0, fontSize: Fonts.size.regular}}>{'Biển Số VD : 28-Y1-0308'}</Text>
         <View style={styles.textinputContent}>
           <TextInput
             multiline={false}
             style={styles.textinput}
             placeholderTextColor={Colors.gray60}
-            placeholder={'vd : 28-Y1-0308'}
+            placeholder={'VD : 28-Y1-0308'}
             autoFocus={focus == 'licensePlate'}
             value={licensePlate}
             onChangeText={text => setLincesePlate(text)}
@@ -216,27 +225,30 @@ const AddCustomer = () => {
             setOpen(false);
           }}
         /> */}
-              <Pressable
-            onPress={() => {
-              setVisible(true);
-            }}>
-            <Text
-              style={{backgroundColor: Colors.darkGray, width: 100, fontSize: 18, padding: 5, color: 'white', borderRadius: 15}}>
-              {'Chọn ảnh'}
-            </Text>
-          </Pressable>
-          {image != null &&
-          
+        <Pressable
+          onPress={() => {
+            setVisible(true);
+          }}>
+          <Text
+            style={{backgroundColor: Colors.darkGray, width: 100, fontSize: 18, padding: 5, color: 'white', borderRadius: 15}}>
+            {'Chọn ảnh'}
+          </Text>
+        </Pressable>
+        {image != null && (
           <Image
-            style={{width: 50, height: 50,marginTop:10,marginLeft:10}}
+            style={{width: 50, height: 50, marginTop: 10, marginLeft: 10}}
             source={{
-              uri:
-                  `data:image/jpg;base64,${image}`
+              uri: `data:image/jpg;base64,${image}`,
             }}></Image>
-          }
+        )}
         <Text style={{color: Colors.error, fontSize: Fonts.size.medium_bold}}>{error}</Text>
 
-        <TDButtonPrimary loading={isLoading} title={'Thêm Khách Hàng'} contentStyle={{marginTop: 32,marginBottom:30}} onPress={btnAdd} />
+        <TDButtonPrimary
+          loading={isLoading}
+          title={'Thêm Khách Hàng'}
+          contentStyle={{marginTop: 32, marginBottom: 30}}
+          onPress={btnAdd}
+        />
       </ScrollView>
       <ImagePickerModal
         isVisible={visible}
@@ -268,7 +280,7 @@ const styles = StyleSheet.create({
     width: 150,
     textAlignVertical: 'center',
     borderRadius: 40,
-    marginTop:10
+    marginTop: 10,
   },
 });
 export default AddCustomer;

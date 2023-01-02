@@ -44,6 +44,7 @@ const Item = ({item, stt,setIdDelete,setIsDelete}) => {
   };
 
   return (
+    <>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
       {/* <View style={styles.imageItem}>
         <Image
@@ -56,7 +57,7 @@ const Item = ({item, stt,setIdDelete,setIsDelete}) => {
       </View>
       <View style={styles.buttonGroupItem}>
         <Pressable  style={{color:"white"}}>
-          <Icon name="edit" size={31} onPress={()=>editCustomer(item?.userName)}  style={{color:"white"}}/>
+          <Icon name="edit" size={31} onPress={()=>editCustomer(item?.userName)}  style={{color:"yellow"}}/>
         </Pressable>
         <Pressable  style={{color:"white"}}>
           <Icon  style={{color:"red"}} name="times" size={31} onPress={()=>{
@@ -66,6 +67,8 @@ const Item = ({item, stt,setIdDelete,setIsDelete}) => {
         </Pressable>
       </View>
     </View>
+    <View style={{height:1, backgroundColor:"black"}}></View>
+    </>
   );
 };
 

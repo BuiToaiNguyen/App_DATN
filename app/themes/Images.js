@@ -7,6 +7,7 @@ const Images = {
     apple: require('@app/assets/images/apple.png'),
     gallery:require('@app/assets/images/thuvienanh.png'),
     camera:require('@app/assets/images/camera.png'),
+    avatar:require('@app/assets/images/avata_user.jpg'),
 
   },
 };
